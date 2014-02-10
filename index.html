@@ -12,13 +12,19 @@
     <script>
 
     // TODO -- completely redo this using semantic forms
-    
+
       $(document).on('ready', function() {
 
         $('#submitButton').click(function() {
           var artist = $('#artistName').val();
           var textArtist= $('<div></div>').text(artist);
           $('#appendLog').append(textArtist);
+
+          var url = '/recommender/' + textArtist.text();
+          console.log('URL: ' + url)
+          $.get(url, function(data){
+            alert(data.test);
+          });
         });
 
       });

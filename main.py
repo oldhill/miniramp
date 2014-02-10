@@ -21,17 +21,15 @@ class MainHandler(webapp2.RequestHandler):
 
 
 class Recommender(webapp2.RequestHandler):
-  def get(self):
-    # test with static data
+  def get(self, artistUsername):
     self.response.headers['Content-Type'] = 'application/json'
     artistObj = {
-      'test' : 'person',
-      'other' : 'another person',
+      'test' : artistUsername,
     }
     self.response.out.write(json.dumps(artistObj))
 
 
 app = webapp2.WSGIApplication([
   ('/', MainHandler),
-  ('/recommender', Recommender),
+  ('/recommender/(\w+)', Recommender),
 ], debug=True)
