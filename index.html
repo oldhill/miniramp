@@ -10,12 +10,11 @@
   <body>
     
     <script>
-
     // TODO -- completely redo this using semantic forms
-
       $(document).on('ready', function() {
 
         $('#submitButton').click(function() {
+
           var artist = $('#artistName').val();
           var textArtist= $('<div></div>').text(artist);
           $('#appendLog').append(textArtist);
@@ -26,7 +25,6 @@
             alert(data.test);
           });
         });
-
       });
     </script>
 
