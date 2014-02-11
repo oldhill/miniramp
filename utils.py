@@ -3,6 +3,7 @@
 import urllib2
 import json
 
+
 def userIdFromUsername(artistUsername):
 
    # 'resolve' URL is necessary to get info based on artist's
@@ -16,3 +17,14 @@ def userIdFromUsername(artistUsername):
     artistObject = json.loads(artistString)
 
     return artistObject['id']
+
+
+def getFollowings(artistId):
+
+    apiUrl = 'http://api.soundcloud.com/users/' + str(artistId);  
+    followingsUrl = apiUrl + '/followings.json?client_id=YOUR_CLIENT_ID' 
+    
+    followingsString = urllib2.urlopen(followingsUrl).read()
+    followingsObj = json.loads(followingsString)
+
+    return followingsObj

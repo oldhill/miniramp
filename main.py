@@ -27,10 +27,10 @@ class Recommender(webapp2.RequestHandler):
   def get(self, artistUsername):
 
     artistId = utils.userIdFromUsername(artistUsername)
-    self.response.out.write(artistId) 
+    followings = utils.getFollowings(artistId)
      
-    # self.response.headers['Content-Type'] = 'application/json'
-    # self.response.out.write(artistObject)
+    self.response.headers['Content-Type'] = 'application/json'
+    self.response.out.write(followings)
 
 
 app = webapp2.WSGIApplication([
