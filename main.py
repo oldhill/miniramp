@@ -28,9 +28,28 @@ class Recommender(webapp2.RequestHandler):
 
     artistId = utils.userIdFromUsername(artistUsername)
     followings = utils.getFollowings(artistId)
+
+    bigSet = {}
+
+    for followedArtist in followings:
+      # first level
+      myName = followedArtist['username']
+      myId = followedArtist['id']
+
+      bigSet[myName] = {
+        'username' : myName,
+        'id' : myId,
+        'occurrenceCount' : 0,
+      }
+      
+      # second level
+      secondFollowings = utils.getFollowings(myId)
+      for secondFollowedArtist in secondFollowings:
+        myName = followedArtist['username']
+        myId = followedArtist['id']
      
     self.response.headers['Content-Type'] = 'application/json'
-    self.response.out.write(followings)
+    self.response.out.write(json.dumps(bigSet))
 
 
 app = webapp2.WSGIApplication([

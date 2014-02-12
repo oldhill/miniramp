@@ -22,7 +22,7 @@
           var url = '/recommender/' + textArtist.text();
           console.log('URL: ' + url)
           $.get(url, function(data){
-            alert(data['description']);
+            console.log(data)
           });
         });
       });
