@@ -39,22 +39,22 @@ class Recommender(webapp2.RequestHandler):
       bigSet[myName] = {
         'username' : myName,
         'id' : myId,
-        'occurrenceCount' : 0,
+        'occurrenceCount' : 1,
       }
       
       # second level
       secondFollowings = utils.getFollowings(myId)
       for secondFollowedArtist in secondFollowings:
-        myName = followedArtist['username']
+        myName = secondFollowedArtist['username']
 
         # increment count, or create new record
-        if bigSet[myName]:
+        if myName in bigSet:
           bigSet[myName]['occurrenceCount'] += 1
         else:
           bigSet[myName] = {
             'username' : myName,
             'id' : followedArtist['id'],
-            'occurrenceCount' : 0,
+            'occurrenceCount' : 1,
           }
 
 
