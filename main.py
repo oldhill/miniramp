@@ -46,7 +46,18 @@ class Recommender(webapp2.RequestHandler):
       secondFollowings = utils.getFollowings(myId)
       for secondFollowedArtist in secondFollowings:
         myName = followedArtist['username']
-        myId = followedArtist['id']
+
+        # increment count, or create new record
+        if bigSet[myName]:
+          bigSet[myName]['occurrenceCount'] += 1
+        else:
+          bigSet[myName] = {
+            'username' : myName,
+            'id' : followedArtist['id'],
+            'occurrenceCount' : 0,
+          }
+
+
      
     self.response.headers['Content-Type'] = 'application/json'
     self.response.out.write(json.dumps(bigSet))
