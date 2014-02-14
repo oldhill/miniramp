@@ -1,6 +1,6 @@
 miniramp
 ========
 
-Artist recommendations -- very early work in progress
+SoundCloud artist recommendations, crunching SoundCloud [API](http://developers.soundcloud.com/) data with Python running on GAE webapp2 framework.
 
-AppEngine Python dev environment
+App is deployed live [here](http://mini-ramp.appspot.com/).
