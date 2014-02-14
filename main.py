@@ -17,13 +17,23 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 
 
 class MainHandler(webapp2.RequestHandler):
+  """
+  Main page where user inputs artist, gets recommendations back
+  """
   def get(self):
-    # main page for user input
     template = JINJA_ENVIRONMENT.get_template('index.html')
     self.response.write(template.render())
 
 
 class Recommender(webapp2.RequestHandler):
+  """
+  Generates recommendations based on user input artist. 
+
+  Gets the input artist's "followings" (all artists they follow)
+  then gets the followings' followings and puts them all in a 
+  structure, then finally counts the frequency and picks the 5 "most
+  followed" artists to recommend.
+  """
   def get(self, artistUsername):
 
     artistId = utils.userIdFromUsername(artistUsername)
@@ -35,26 +45,27 @@ class Recommender(webapp2.RequestHandler):
       # first level
       myName = followedArtist['username']
       myId = followedArtist['id']
+      myUrl = followedArtist['permalink_url']
 
       bigSet[myName] = {
         'username' : myName,
         'id' : myId,
         'occurrenceCount' : 1,
+        'url' : myUrl,
       }
       
       # second level
       secondFollowings = utils.getFollowings(myId)
       for secondFollowedArtist in secondFollowings:
-        myName = secondFollowedArtist['username']
-
-        # increment count, or create new record
-        if myName in bigSet:
-          bigSet[myName]['occurrenceCount'] += 1
+        secondName = secondFollowedArtist['username']
+        if secondName in bigSet:
+          bigSet[secondName]['occurrenceCount'] += 1
         else:
-          bigSet[myName] = {
-            'username' : myName,
-            'id' : followedArtist['id'],
+          bigSet[secondName] = {
+            'username' : secondName,
+            'id' : secondFollowedArtist['id'],
             'occurrenceCount' : 1,
+            'url' : secondFollowedArtist['permalink_url']
           }
 
 

@@ -23,6 +23,7 @@
           console.log('URL: ' + url)
           $.get(url, function(data){
             console.log(data)
+            $('#appendLog').append(data['blackstock']['url']);
           });
         });
       });
