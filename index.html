@@ -12,7 +12,6 @@
     <script>
     // TODOs
     // Redo input using semantic forms
-    // Add page loading indicator
       $(document).on('ready', function() {
         $('#loading').hide()
 
@@ -23,7 +22,8 @@
           // Display current artist to user
           var artist = $('#artistName').val();
           var textArtist= $('<div></div>').text(artist);
-          var artistMarkup = '<p>' + 'If you\'re a fan of ' +
+          var artistMarkup = '-------------------------------------------------'+
+                             '<p>' + 'If you\'re a fan of ' +
                              '<strong>' + textArtist.html() + ',</strong>' +
                              '<br> you might also dig: <p>'
           $('#appendLog').append(artistMarkup)
@@ -33,8 +33,11 @@
           console.log('URL: ' + url);
           $.get(url, function(data){
             console.log(data)
-            for (var i = 0; i < data.length; i++)
-              $('#appendLog').append(data[i]['username'] + '<br>');
+            for (var i = 0; i < data.length; i++) {
+              var recommendationMarkup = '<span style="color:#2A52BE">' + 
+                                         data[i]['username'] + '</span><br>';
+              $('#appendLog').append(recommendationMarkup);
+            }
             $('#loading').hide()
           });
         });
@@ -42,9 +45,9 @@
     </script>
 
     <div id="intro">
-      Hi!  <br>Welcome to Miniramp (version something-very-early)
+      Hi!  Welcome to Miniramp (version something-very-early).
       <p>To use this, enter the <a href="http://soundcloud.com">SoundCloud</a> username of an artist you like below,
-      <br>then wait a few seconds for a list of recommended, similar artists.
+      <br>then wait about a minute for a list of recommended, similar artists.
     </div>
 
     <div id="input">
@@ -55,14 +58,15 @@
     <div id="appendLog">
     </div>
     
-    <div id="loading">
+    <div id="loading" style="color:#FF7E00">
       <p>
       <em> --- loading --- </em>
     </div>
 
     <div id="footer">
-      <p>made by oldhill using the SoundCloud <a href="http://developers.soundcloud.com/">API</a>  
-      <br>code is at <a href="http://github.com/oldhill/miniramp">GitHub</a>
+      <p>-------------------------------------------------
+      <br>Made by oldhill using the SoundCloud <a href="http://developers.soundcloud.com/">API</a>. 
+      All code is at <a href="http://github.com/oldhill/miniramp">GitHub</a>.
     </div>
 
 

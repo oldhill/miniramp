@@ -1,4 +1,8 @@
-# Miniramp extremely early, WIP version...
+"""
+ Miniramp extremely early version.
+ Recommends SoundCloud artists based on a user input artist.
+ by oldhill.  MIT license.
+"""
 
 import os
 import json
@@ -11,6 +15,7 @@ import logging
 
 # custom SoundCloud utils
 import utils
+
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -44,7 +49,6 @@ class Recommender(webapp2.RequestHandler):
     artistsObject = {}
     artistsList = []
 
-    # Populate 'artistsObject', a dict-of-dicts here
     for followedArtist in followings:
       # first level
       myName = followedArtist['username']
