@@ -16,26 +16,46 @@
 
         $('#submitButton').click(function() {
 
+          // Display current artist to user
           var artist = $('#artistName').val();
           var textArtist= $('<div></div>').text(artist);
-          $('#appendLog').append(textArtist);
+          var artistMarkup = '<p>' + 'If you\'re a fan of ' +
+                             '<strong>' + textArtist.html() + ',</strong>' +
+                             '<br> you might also dig: <p>'
+          $('#appendLog').append(artistMarkup)
 
+          // Then get recommendations from server and append them to DOM
           var url = '/recommender/' + textArtist.text();
           console.log('URL: ' + url)
           $.get(url, function(data){
             console.log(data)
             for (var i = 0; i < data.length; i++)
-              $('#appendLog').append(data[i]['username']);
+              $('#appendLog').append(data[i]['username'] + '<br>');
+
           });
         });
       });
     </script>
 
-    Artist username: <input type="text" id="artistName">
-    <button id="submitButton">Submit</button>
+    <div id="intro">
+      Hi!  <br>Welcome to Miniramp (version something-very-early)
+      <p>To use this, enter the <a href="http://soundcloud.com">SoundCloud</a> username of an artist you like below,
+      <br>then wait a few seconds for a list of recommended, similar artists.
+    </div>
+
+    <div id="input">
+      Artist username: <input type="text" id="artistName">
+      <button id="submitButton">Submit</button>
+    </div>
 
     <div id="appendLog">
     </div>
+    
+    <div id="footer">
+      <p>Made by Oldhill using the SoundCloud <a href="http://developers.soundcloud.com/">API</a>.  
+      <br>Code is at <a href="http://github.com/oldhill/miniramp">GitHub</a>.
+    </div>
+
 
   </body>
   
