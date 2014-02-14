@@ -10,11 +10,15 @@
   <body>
     
     <script>
-    // TODO -- completely redo this using semantic forms
-    // also loading indicator
+    // TODOs
+    // Redo input using semantic forms
+    // Add page loading indicator
       $(document).on('ready', function() {
+        $('#loading').hide()
 
         $('#submitButton').click(function() {
+          $('#appendLog').empty()
+          $('#loading').show()
 
           // Display current artist to user
           var artist = $('#artistName').val();
@@ -26,12 +30,12 @@
 
           // Then get recommendations from server and append them to DOM
           var url = '/recommender/' + textArtist.text();
-          console.log('URL: ' + url)
+          console.log('URL: ' + url);
           $.get(url, function(data){
             console.log(data)
             for (var i = 0; i < data.length; i++)
               $('#appendLog').append(data[i]['username'] + '<br>');
-
+            $('#loading').hide()
           });
         });
       });
@@ -51,9 +55,14 @@
     <div id="appendLog">
     </div>
     
+    <div id="loading">
+      <p>
+      <em> --- loading --- </em>
+    </div>
+
     <div id="footer">
-      <p>Made by Oldhill using the SoundCloud <a href="http://developers.soundcloud.com/">API</a>.  
-      <br>Code is at <a href="http://github.com/oldhill/miniramp">GitHub</a>.
+      <p>made by oldhill using the SoundCloud <a href="http://developers.soundcloud.com/">API</a>  
+      <br>code is at <a href="http://github.com/oldhill/miniramp">GitHub</a>
     </div>
 
 
