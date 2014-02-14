@@ -11,6 +11,7 @@
     
     <script>
     // TODO -- completely redo this using semantic forms
+    // also loading indicator
       $(document).on('ready', function() {
 
         $('#submitButton').click(function() {
@@ -23,7 +24,8 @@
           console.log('URL: ' + url)
           $.get(url, function(data){
             console.log(data)
-            $('#appendLog').append(data['blackstock']['url']);
+            for (var i = 0; i < data.length; i++)
+              $('#appendLog').append(data[i]['username']);
           });
         });
       });

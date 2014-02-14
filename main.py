@@ -3,9 +3,11 @@
 import os
 import json
 import urllib2
+import operator
 
 import webapp2
 import jinja2
+import logging
 
 # custom SoundCloud utils
 import utils
@@ -39,39 +41,49 @@ class Recommender(webapp2.RequestHandler):
     artistId = utils.userIdFromUsername(artistUsername)
     followings = utils.getFollowings(artistId)
 
-    bigSet = {}
+    artistsObject = {}
+    artistsList = []
 
+    # Populate 'artistsObject', a dict-of-dicts here
     for followedArtist in followings:
       # first level
       myName = followedArtist['username']
       myId = followedArtist['id']
       myUrl = followedArtist['permalink_url']
 
-      bigSet[myName] = {
+      artistsObject[myName] = {
         'username' : myName,
         'id' : myId,
         'occurrenceCount' : 1,
         'url' : myUrl,
       }
+      artistsList.append(artistsObject[myName])
       
       # second level
       secondFollowings = utils.getFollowings(myId)
       for secondFollowedArtist in secondFollowings:
         secondName = secondFollowedArtist['username']
-        if secondName in bigSet:
-          bigSet[secondName]['occurrenceCount'] += 1
+        if secondName in artistsObject:
+          artistsObject[secondName]['occurrenceCount'] += 1
         else:
-          bigSet[secondName] = {
+          artistsObject[secondName] = {
             'username' : secondName,
             'id' : secondFollowedArtist['id'],
             'occurrenceCount' : 1,
             'url' : secondFollowedArtist['permalink_url']
           }
+          artistsList.append(artistsObject[secondName])
 
+    # Now that artistsObject is populated, sort and return the 
+    # most followed artists
+    sortedArtists = sorted(artistsList, 
+                           key = operator.itemgetter('occurrenceCount'),
+                           reverse = True)
+    topTen = sortedArtists[0:9]
+    logging.info(topTen)
 
-     
     self.response.headers['Content-Type'] = 'application/json'
-    self.response.out.write(json.dumps(bigSet))
+    self.response.out.write(json.dumps(topTen))
 
 
 app = webapp2.WSGIApplication([
