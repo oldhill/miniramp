@@ -14,7 +14,7 @@ import jinja2
 import logging
 
 # custom SoundCloud utils
-import utils
+import utils.utils as utils
 
 
 JINJA_ENVIRONMENT = jinja2.Environment(
