@@ -83,11 +83,11 @@ class Recommender(webapp2.RequestHandler):
     sortedArtists = sorted(artistsList, 
                            key = operator.itemgetter('occurrenceCount'),
                            reverse = True)
-    topTen = sortedArtists[0:9]
-    logging.info(topTen)
+    topEight = sortedArtists[0:8]
+    logging.info(topEight)
 
     self.response.headers['Content-Type'] = 'application/json'
-    self.response.out.write(json.dumps(topTen))
+    self.response.out.write(json.dumps(topEight))
 
 
 app = webapp2.WSGIApplication([
