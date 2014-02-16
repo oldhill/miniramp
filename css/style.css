@@ -1,0 +1,9 @@
+a.artistlink:link{
+  color : #2A52BE;
+  text-decoration : none;
+}
+
+a.artist:visited{
+  color : #2A52BE;
+  text-decoration: none;
+}
