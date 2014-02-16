@@ -3,7 +3,7 @@ a.artistlink:link{
   text-decoration : none;
 }
 
-a.artist:visited{
+a.artistlink:visited{
   color : #2A52BE;
   text-decoration: none;
 }
