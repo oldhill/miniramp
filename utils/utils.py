@@ -3,6 +3,8 @@
 import urllib2
 import json
 
+import logging
+
 
 def userIdFromUsername(artistUsername):
 

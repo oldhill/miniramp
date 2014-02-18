@@ -84,7 +84,10 @@ class Recommender(webapp2.RequestHandler):
                            key = operator.itemgetter('occurrenceCount'),
                            reverse = True)
     topEight = sortedArtists[0:8]
+
+    #debug
     logging.info(topEight)
+    logging.info('Total # of artists: ' + str(len(artistsList)))
 
     self.response.headers['Content-Type'] = 'application/json'
     self.response.out.write(json.dumps(topEight))
