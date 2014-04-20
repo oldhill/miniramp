@@ -1,16 +1,11 @@
-# custom SoundCloud REST API utility functions
-
-import urllib2
 import json
-
 import logging
+import urllib2
 
 
 def userIdFromUsername(artistUsername):
-
-   # 'resolve' URL is necessary to get info based on artist's
-    # username instead of user ID number.
-    # Info: http://developers.soundcloud.com/docs/api/reference#resolve
+    # 'resolve' URL is necessary to get info based on artist's username instead of user ID number.
+    # Docs: http://developers.soundcloud.com/docs/api/reference#resolve
     resolveUrl = 'http://api.soundcloud.com/resolve.json?url='
     knownUrl = 'http://soundcloud.com/' + artistUsername + '&client_id=YOUR_CLIENT_ID' 
     fullUrl = resolveUrl + knownUrl
@@ -22,7 +17,6 @@ def userIdFromUsername(artistUsername):
 
 
 def getFollowings(artistId):
-
     apiUrl = 'http://api.soundcloud.com/users/' + str(artistId);  
     followingsUrl = apiUrl + '/followings.json?client_id=YOUR_CLIENT_ID' 
     

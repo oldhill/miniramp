@@ -1,7 +1,7 @@
-"""
- Miniramp extremely early version.
- Recommends SoundCloud artists based on a user input artist.
- by oldhill.  MIT license.
+"""Miniramp extremely early version.
+
+Recommends SoundCloud artists based on a user input artist. 
+by oldhill.  MIT license.
 """
 
 import os
@@ -13,19 +13,18 @@ import webapp2
 import jinja2
 import logging
 
-# custom SoundCloud utils
-import utils.utils as utils
+import utils.utils as utils # custom SoundCloud utils
 
 
 JINJA_ENVIRONMENT = jinja2.Environment(
-    loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
-    extensions=['jinja2.ext.autoescape'],
-    autoescape=True)
+  loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
+  extensions=['jinja2.ext.autoescape'],
+  autoescape=True
+)
 
 
 class MainHandler(webapp2.RequestHandler):
-  """
-  Main page where user inputs artist, gets recommendations back
+  """Main page where user inputs artist, gets recommendations back.
   """
   def get(self):
     template = JINJA_ENVIRONMENT.get_template('index.html')
@@ -33,19 +32,17 @@ class MainHandler(webapp2.RequestHandler):
 
 
 class Recommender(webapp2.RequestHandler):
-  """
-  Generates recommendations based on user input artist. 
+  """Generates recommendations based on user input artist. 
 
   Gets the input artist's "followings" (all artists they follow)
   then gets the followings' followings and puts them all in a 
   structure, then finally counts the frequency and picks the 5 "most
   followed" artists to recommend.
   """
+  
   def get(self, artistUsername):
-
     artistId = utils.userIdFromUsername(artistUsername)
     followings = utils.getFollowings(artistId)
-
     artistsObject = {}
     artistsList = []
 
