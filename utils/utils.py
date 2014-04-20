@@ -4,20 +4,20 @@ import urllib2
 
 
 def userIdFromUsername(artistUsername):
-    # 'resolve' URL is necessary to get info based on artist's username instead of user ID number.
-    # Docs: http://developers.soundcloud.com/docs/api/reference#resolve
-    resolveUrl = 'http://api.soundcloud.com/resolve.json?url='
-    knownUrl = 'http://soundcloud.com/' + artistUsername + '&client_id=YOUR_CLIENT_ID' 
-    fullUrl = resolveUrl + knownUrl
+    artistUrl = 'http://soundcloud.com/%s&client_id=YOUR_CLIENT_ID' % artistUsername 
     
-    artistString = urllib2.urlopen(fullUrl).read()
+    # This 'resolve' prefix URL is necessary to get info by username rather than ID number.
+    # doc: http://developers.soundcloud.com/docs/api/reference#resolve
+    resolvePrefix = 'http://api.soundcloud.com/resolve.json?url='
+    
+    artistString = urllib2.urlopen(resolvePrefix + artistUrl).read()
     artistObject = json.loads(artistString)
 
     return artistObject['id']
 
 
 def getFollowings(artistId):
-    apiUrl = 'http://api.soundcloud.com/users/' + str(artistId);  
+    apiUrl = 'http://api.soundcloud.com/users/%s' % artistId 
     followingsUrl = apiUrl + '/followings.json?client_id=YOUR_CLIENT_ID' 
     
     followingsString = urllib2.urlopen(followingsUrl).read()

@@ -11,18 +11,19 @@
   <body>
     
     <script>
-    // TODOs
-    // Redo input using semantic forms
+    // TODO: redo input using semantic forms
       $(document).on('ready', function() {
         $('#loading').hide();
         $('#errorMsg').hide();
+        $('#noFollowings').hide();
 
         $('#submitButton').click(function() {
           $('#appendLog').empty()
           $('#loading').show()
           $('#errorMsg').hide();
+          $('#noFollowings').hide();
 
-          // Display current artist to user
+          // Display current artist to user while loading recommendations
           var artist = $('#artistName').val();
           var textArtist= $('<div></div>').text(artist);
           var artistMarkup = '-------------------------------------------------'+
@@ -31,22 +32,24 @@
                              '<br> you might also dig: <p>'
           $('#appendLog').append(artistMarkup)
 
-          // Then get recommendations from server and append them to DOM
+          // Get recommendations from server and append them w/ links to DOM
           var url = '/recommender/' + textArtist.text();
-          console.log('URL: ' + url);
           $.get(url, function(data){
-            console.log(data)
-            for (var i = 0; i < data.length; i++) {
-              var artistUrl = data[i]['url'];
-              var recommendationMarkup = '<a class="artistlink" href="' + 
-                                         artistUrl + '">' + 
-                                         data[i]['username'] + '</a><br>';
-              $('#appendLog').append(recommendationMarkup);
+            if (data) {
+              for (var i = 0; i < data.length; i++) {
+                var artistUrl = data[i]['url'];
+                var recommendationMarkup = '<a class="artistlink" href="' + 
+                                           artistUrl + '">' + 
+                                           data[i]['username'] + '</a><br>';
+                $('#appendLog').append(recommendationMarkup);
+              }
+              $('#loading').hide();
+            } else {
+              // Artist doesn't follow any others, so recommendation can't work
+              $('#loading').hide();
+              $('#noFollowings').show();
             }
-            $('#loading').hide();
-          })
-          // Ajax request error handling
-            .fail(function() {
+          }).fail(function() {  // Ajax request error handling
               $('#loading').hide();
               $('#errorMsg').show();
           });
@@ -71,6 +74,10 @@
     <div id="loading" style="color:#FF7E00">
       <p>
       <em> --- loading --- </em>
+    </div>
+
+    <div id="noFollowings" style="color:#FF7E00">
+      <p> This artist doesn't follow any other artists. Please try another!
     </div>
 
     <div id="errorMsg" style="color:red">

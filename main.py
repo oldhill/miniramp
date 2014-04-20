@@ -4,14 +4,14 @@ Recommends SoundCloud artists based on a user input artist.
 by oldhill.  MIT license.
 """
 
-import os
 import json
-import urllib2
 import operator
+import urllib2
+import os
 
-import webapp2
 import jinja2
 import logging
+import webapp2
 
 import utils.utils as utils # custom SoundCloud utils
 
@@ -32,17 +32,19 @@ class MainHandler(webapp2.RequestHandler):
 
 
 class Recommender(webapp2.RequestHandler):
-  """Generates recommendations based on user input artist. 
+  """Recommends artists based on who the input artist follows.
 
-  Gets the input artist's "followings" (all artists they follow)
-  then gets the followings' followings and puts them all in a 
-  structure, then finally counts the frequency and picks the 5 "most
-  followed" artists to recommend.
+  Gets the input artist's "followings" (all artists they follow) then gets the 
+  followings' followings, then counts artist occurrences in the entire set and 
+  returns the top followed artists as recommendations.
   """
   
   def get(self, artistUsername):
     artistId = utils.userIdFromUsername(artistUsername)
     followings = utils.getFollowings(artistId)
+    if not followings: # artist does not follow any artists
+      return 
+
     artistsObject = {}
     artistsList = []
 
