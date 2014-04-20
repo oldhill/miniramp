@@ -48,38 +48,42 @@ class Recommender(webapp2.RequestHandler):
       return 
 
     # Log each followed artist, then log all of their followings as well
-    artistTracker = {}
+    artist_tracker = {}
     for artist in followings:
-      artistTracker = self._logOrIncrement(artist, artistTracker)
+      artist_tracker = self._logOrIncrement(artist, artist_tracker)
       next_followings = utils.getFollowings(artist['id'])
       for artist in next_followings:
-        artistTracker = logOrIncrement(artist, artistTracker)
+        artist_tracker = self._logOrIncrement(artist, artist_tracker)
 
-    # Find and return the most followed artists
-    sortedArtists = sorted(artistsList, 
-                           key = operator.itemgetter('occurrenceCount'),
-                           reverse = True)
-    topEight = sortedArtists[0:8]
+    # Transform artists into a list, so we can sort and return the most-followed
+    artist_list = []
+    for name, artist_dict in artist_tracker.iteritems():
+      artist_list.append(artist_dict)
+    
+    sorted_artists = sorted(artist_list, 
+                            key = operator.itemgetter('occurrence_count'),
+                            reverse = True)
+    top_eight = sorted_artists[0:8]
 
-    #debug
-    logging.info(topEight)
-    logging.info('Total # of artists: ' + str(len(artistsList)))
+    # Debug
+    logging.info(top_eight)
+    logging.info('Total # of artists: ' + str(len(artist_list)))
 
     self.response.headers['Content-Type'] = 'application/json'
-    self.response.out.write(json.dumps(topEight))
+    self.response.out.write(json.dumps(top_eight))
 
   @staticmethod
-  def _logOrIncrement(artist, artistTracker):
-    if artist['username'] in artistTracker:
-      artistTracker[artist['username']]['occurrenceCount'] += 1
+  def _logOrIncrement(artist, artist_tracker):
+    if artist['username'] in artist_tracker:
+      artist_tracker[artist['username']]['occurrence_count'] += 1
     else:
-      artistTracker[artist['username']] = {
+      artist_tracker[artist['username']] = {
         'username' : artist['username'],
         'id' : artist['id'],
-        'occurrenceCount' : 1,
+        'occurrence_count' : 1,
         'url' : artist['permalink_url'],
       }
-    return artistTracker
+    return artist_tracker
 
     
 app = webapp2.WSGIApplication([
