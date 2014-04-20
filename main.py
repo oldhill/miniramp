@@ -40,45 +40,22 @@ class Recommender(webapp2.RequestHandler):
   """
   
   def get(self, artistUsername):
-    artistId = utils.userIdFromUsername(artistUsername)
-    followings = utils.getFollowings(artistId)
-    if not followings: # artist does not follow any artists
+    artist_id = utils.userIdFromUsername(artistUsername)
+    followings = utils.getFollowings(artist_id)
+
+    # Handle case w here artist does not follow any artists
+    if not followings: 
       return 
 
-    artistsObject = {}
-    artistsList = []
+    # Log each followed artist, then log all of their followings as well
+    artistTracker = {}
+    for artist in followings:
+      artistTracker = self._logOrIncrement(artist, artistTracker)
+      next_followings = utils.getFollowings(artist['id'])
+      for artist in next_followings:
+        artistTracker = logOrIncrement(artist, artistTracker)
 
-    for followedArtist in followings:
-      # first level
-      myName = followedArtist['username']
-      myId = followedArtist['id']
-      myUrl = followedArtist['permalink_url']
-
-      artistsObject[myName] = {
-        'username' : myName,
-        'id' : myId,
-        'occurrenceCount' : 1,
-        'url' : myUrl,
-      }
-      artistsList.append(artistsObject[myName])
-      
-      # second level
-      secondFollowings = utils.getFollowings(myId)
-      for secondFollowedArtist in secondFollowings:
-        secondName = secondFollowedArtist['username']
-        if secondName in artistsObject:
-          artistsObject[secondName]['occurrenceCount'] += 1
-        else:
-          artistsObject[secondName] = {
-            'username' : secondName,
-            'id' : secondFollowedArtist['id'],
-            'occurrenceCount' : 1,
-            'url' : secondFollowedArtist['permalink_url']
-          }
-          artistsList.append(artistsObject[secondName])
-
-    # Now that artistsObject is populated, sort and return the 
-    # most followed artists
+    # Find and return the most followed artists
     sortedArtists = sorted(artistsList, 
                            key = operator.itemgetter('occurrenceCount'),
                            reverse = True)
@@ -91,7 +68,20 @@ class Recommender(webapp2.RequestHandler):
     self.response.headers['Content-Type'] = 'application/json'
     self.response.out.write(json.dumps(topEight))
 
+  @staticmethod
+  def _logOrIncrement(artist, artistTracker):
+    if artist['username'] in artistTracker:
+      artistTracker[artist['username']]['occurrenceCount'] += 1
+    else:
+      artistTracker[artist['username']] = {
+        'username' : artist['username'],
+        'id' : artist['id'],
+        'occurrenceCount' : 1,
+        'url' : artist['permalink_url'],
+      }
+    return artistTracker
 
+    
 app = webapp2.WSGIApplication([
   ('/', MainHandler),
   ('/recommender/(\w+)', Recommender),
