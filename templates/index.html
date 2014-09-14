@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 {% autoescape true %}
 <html>
-
   <head>
-    <title>Miniramp v0.1</title>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <link href="static/css/style.css" rel="stylesheet" type="text/css">
+    <title>Miniramp</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- CSS, including Bootstrap -->
+    <link href="static/css/style.css" rel="stylesheet" type="text/css">
+    <link href="static/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Google Analytics -->
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -19,58 +22,10 @@
   </head>
 
   <body>
-    
-    <script>
-    // TODO: redo input using semantic forms
-      $(document).on('ready', function() {
-        $('#loading').hide();
-        $('#errorMsg').hide();
-        $('#noFollowings').hide();
-
-        $('#submitButton').click(function() {
-          $('#appendLog').empty()
-          $('#loading').show()
-          $('#errorMsg').hide();
-          $('#noFollowings').hide();
-
-          // Display current artist to user while loading recommendations
-          var artist = $('#artistName').val();
-          var textArtist= $('<div></div>').text(artist);
-          var artistMarkup = '-------------------------------------------------'+
-                             '<p>' + 'If you\'re a fan of ' +
-                             '<strong>' + textArtist.html() + ',</strong>' +
-                             '<br> you might also dig: <p>'
-          $('#appendLog').append(artistMarkup)
-
-          // Get recommendations from server and append them w/ links to DOM
-          var url = '/recommender/' + textArtist.text();
-          $.get(url, function(data){
-            if (data) {
-              for (var i = 0; i < data.length; i++) {
-                var artistUrl = data[i]['url'];
-                var recommendationMarkup = '<a class="artistlink" href="' + 
-                                           artistUrl + '">' + 
-                                           data[i]['username'] + '</a><br>';
-                $('#appendLog').append(recommendationMarkup);
-              }
-              $('#loading').hide();
-            } else {
-              // Artist doesn't follow any others, so recommendation can't work
-              $('#loading').hide();
-              $('#noFollowings').show();
-            }
-          }).fail(function() {  // Ajax request error handling
-              $('#loading').hide();
-              $('#errorMsg').show();
-          });
-        });
-      });
-    </script>
-
     <div id="intro">
-      Hi!  Welcome to Miniramp (version something-very-early).
-      <p>To use this, enter the <a href="http://soundcloud.com">SoundCloud</a> username of an artist you like below,
-      <br>then wait about a minute for a list of recommended, similar artists.
+      Hi!  Welcome to Miniramp.
+      <p>To use this, enter the <a href="http://soundcloud.com">SoundCloud</a> username of an artist you like,
+      <br>then wait about a minute for links to new SoundCloud artists, recommended based on your input.
     </div>
 
     <div id="input">
@@ -79,6 +34,7 @@
     </div>
 
     <div id="appendLog">
+      <!-- populated by index.js -->
     </div>
     
     <div id="loading" style="color:#FF7E00">
@@ -101,8 +57,10 @@
       All code is at <a href="http://github.com/oldhill/miniramp">GitHub</a>.
     </div>
 
-
-  </body>
-  
+    <!-- jQuery -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- index.js, main js controller -->
+    <script src="static/js/index.js"></script>
+  </body>  
 </html>
 {% endautoescape %}
