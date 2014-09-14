@@ -13,8 +13,12 @@ $(document).on('ready', function() {
     $('#errorMsg').hide();
     $('#noFollowings').hide();
 
-    // Display current artist to user while loading recommendations
+    // Default artist username to placeholder value
     var artist = $('#artistName').val();
+    if (artist === "") {
+      artist = 'atish';
+    }
+    // Display current artist to user while loading recommendations.
     var textArtist= $('<div></div>').text(artist);
     var artistMarkup = '<p>' + 'If you\'re a fan of ' +
                        '<strong>' + textArtist.html() + ',</strong>' +
