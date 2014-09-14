@@ -1,6 +1,8 @@
 miniramp
 ========
 
-SoundCloud artist recommendations, crunching SoundCloud [API](http://developers.soundcloud.com/) data with Python running on GAE webapp2 framework.
+Miniramp recommends new SoundCloud artists to listen to, based on an artist you already like.
 
-App is deployed live [here](http://mini-ramp.appspot.com/).
+All data is from the very cool SoundCloud [API](http://developers.soundcloud.com/).
+
+Check it out at [miniramp.net](http://miniramp.net/).
