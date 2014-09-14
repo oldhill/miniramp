@@ -7,7 +7,7 @@ import urllib2
 import jinja2
 import webapp2
 
-from utils import recommender
+from handlers import recommender
 
 JINJA_ENVIRONMENT = jinja2.Environment(
   loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),

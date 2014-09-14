@@ -4,7 +4,7 @@ import operator
 
 import webapp2
 
-import soundcloud_utils
+from utils import soundcloud_utils
 
 
 class RecommendationHandler(webapp2.RequestHandler):
