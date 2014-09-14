@@ -16,8 +16,7 @@ $(document).on('ready', function() {
     // Display current artist to user while loading recommendations
     var artist = $('#artistName').val();
     var textArtist= $('<div></div>').text(artist);
-    var artistMarkup = '-------------------------------------------------'+
-                       '<p>' + 'If you\'re a fan of ' +
+    var artistMarkup = '<p>' + 'If you\'re a fan of ' +
                        '<strong>' + textArtist.html() + ',</strong>' +
                        '<br> you might also dig: <p>'
     $('#appendLog').append(artistMarkup)
@@ -39,9 +38,13 @@ $(document).on('ready', function() {
         $('#loading').hide();
         $('#noFollowings').show();
       }
-    }).fail(function() {  // Ajax request error handling
-        $('#loading').hide();
-        $('#errorMsg').show();
+    }).fail(function() { 
+      // Ajax request error-- for now we assume it's a lookup error for the input user
+      $('#appendLog').empty()
+      $('#errorMsg').empty()      
+      $('#errorMsg').append('<em>Error, SoundCloud user "' + textArtist.html() + '" not found</em>');
+      $('#loading').hide();
+      $('#errorMsg').show();
     });
   });
 });

@@ -9,6 +9,10 @@
     <link href="static/css/style.css" rel="stylesheet" type="text/css">
     <link href="static/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 
+    <!-- jQuery and main js controller. Loaded early to avoid flashing hidden elements. -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="static/js/index.js"></script>
+
     <!-- Google Analytics -->
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -22,15 +26,18 @@
   </head>
 
   <body>
+
     <div id="intro">
-      Hi!  Welcome to Miniramp.
-      <p>To use this, enter the <a href="http://soundcloud.com">SoundCloud</a> username of an artist you like,
-      <br>then wait about a minute for links to new SoundCloud artists, recommended based on your input.
+      <h4> Hi! Welcome to Miniramp. </h4>
+      <br>Enter the SoundCloud username of an artist you like (e.g. 
+        <a href="https://soundcloud.com/atish">atish</a>), we'll recommended links to 8 new artists to check out.
     </div>
 
     <div id="input">
-      Artist username: <input type="text" id="artistName">
+      <p>-------------------------------------------------
+      <br>Artist username: <input type="text" id="artistName" placeholder="atish">
       <button id="submitButton">Submit</button>
+      <p>-------------------------------------------------
     </div>
 
     <div id="appendLog">
@@ -47,8 +54,7 @@
     </div>
 
     <div id="errorMsg" style="color:red">
-      <p>
-      <em> --- Error, the input SoundCloud username wasn't found --- </em>
+      <!-- populated by index.js if there's a lookup error -->
     </div>
 
     <div id="footer">
@@ -57,10 +63,6 @@
       All code is at <a href="http://github.com/oldhill/miniramp">GitHub</a>.
     </div>
 
-    <!-- jQuery -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <!-- index.js, main js controller -->
-    <script src="static/js/index.js"></script>
   </body>  
 </html>
 {% endautoescape %}
