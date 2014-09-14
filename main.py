@@ -9,7 +9,6 @@ import webapp2
 
 from utils import recommender
 
-
 JINJA_ENVIRONMENT = jinja2.Environment(
   loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
   extensions=['jinja2.ext.autoescape'],
@@ -21,7 +20,7 @@ class MainHandler(webapp2.RequestHandler):
   """Main page where user inputs artist, gets recommendations back.
   """
   def get(self):
-    template = JINJA_ENVIRONMENT.get_template('index.html')
+    template = JINJA_ENVIRONMENT.get_template('templates/index.html')
     self.response.write(template.render())
 
    
