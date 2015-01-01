@@ -1,3 +1,7 @@
+body {
+  padding: 0px 10px;
+}
+
 a.artistlink:link{
   color : #2A52BE;
   text-decoration : none;
