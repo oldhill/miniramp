@@ -1,4 +1,4 @@
-"""Recommends SoundCloud artists based on who an input artist follows
+""" Recommends SoundCloud artists based on who an input artist follows
 """
 
 import os
@@ -17,14 +17,23 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 
 
 class MainHandler(webapp2.RequestHandler):
-  """Main page where user inputs artist, gets recommendations back.
+  """ Main page where user inputs artist, gets recommendations back.
   """
   def get(self):
     template = JINJA_ENVIRONMENT.get_template('templates/index.html')
     self.response.write(template.render())
 
-   
+
+class CubesHandler(webapp2.RequestHandler):
+  """ Render page with links to static graphics projects
+  """
+  def get(self):
+    template = JINJA_ENVIRONMENT.get_template('templates/cubes.html')
+    self.response.write(template.render())
+
+
 app = webapp2.WSGIApplication([
   ('/', MainHandler),
   ('/recommender/(\w+)', recommender.RecommendationHandler),
+  ('/cubes', CubesHandler),
 ], debug=True)
