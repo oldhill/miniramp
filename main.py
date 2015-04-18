@@ -25,10 +25,18 @@ class MainHandler(webapp2.RequestHandler):
 
 
 class CubesHandler(webapp2.RequestHandler):
-  """ Render page with links to static graphics projects
+  """ Render cubes
   """
   def get(self):
     template = JINJA_ENVIRONMENT.get_template('templates/cubes.html')
+    self.response.write(template.render())
+
+
+class ProcHandler(webapp2.RequestHandler):
+  """ Render processing sketch
+  """
+  def get(self):
+    template = JINJA_ENVIRONMENT.get_template('templates/processing.html')
     self.response.write(template.render())
 
 
@@ -36,4 +44,5 @@ app = webapp2.WSGIApplication([
   ('/', MainHandler),
   ('/recommender/(\w+)', recommender.RecommendationHandler),
   ('/cubes', CubesHandler),
+  ('/processing', ProcHandler),
 ], debug=True)
