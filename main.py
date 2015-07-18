@@ -17,6 +17,13 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 
 
 class MainHandler(webapp2.RequestHandler):
+  """ About page
+  """
+  def get(self):
+    template = JINJA_ENVIRONMENT.get_template('templates/index2.html')
+    self.response.write(template.render())
+
+class SoundcloudRecHandler(webapp2.RequestHandler):
   """ Main page where user inputs artist, gets recommendations back.
   """
   def get(self):
