@@ -23,11 +23,11 @@ class MainHandler(webapp2.RequestHandler):
     template = JINJA_ENVIRONMENT.get_template('templates/index2.html')
     self.response.write(template.render())
 
-class SoundcloudRecHandler(webapp2.RequestHandler):
+class ScHandler(webapp2.RequestHandler):
   """ Main page where user inputs artist, gets recommendations back.
   """
   def get(self):
-    template = JINJA_ENVIRONMENT.get_template('templates/index.html')
+    template = JINJA_ENVIRONMENT.get_template('templates/sc-index.html')
     self.response.write(template.render())
 
 
@@ -49,6 +49,7 @@ class ProcHandler(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
   ('/', MainHandler),
+  ('/sc', ScHandler),
   ('/recommender/(\w+)', recommender.RecommendationHandler),
   ('/cubes', CubesHandler),
   ('/processing', ProcHandler),
